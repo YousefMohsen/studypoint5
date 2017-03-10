@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Start Page</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+              <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
+    </head>
+    <body>
+
+            <input type="text" id="amount" value="" />
+        <input type="text" id="prop" value="" />
+        <input type="submit" id="btn" value="Get data" />
+        
+   
+   
+        
+        <div id="tableDiv"></div>
+        
+        
+        
+        <script>
+                    
+        
+                 function listToTable(alist) {
+                var result = alist.map(function (item) {
+
+                    return "<tr> <td>" + item.fname + "</td><td>" + item.lname + "</td><td>" + item.street + "</td><td>" + item.city +  "</td></tr>";
+                });
+                var pre = "<table class=\"table table-striped\"><thead><tr><th>Firstname</th><th>Lastname</th><th>Street</th><th>City</th></tr></thead><tbody>";
+                var post = "</tbody></table>";
+                
+               
+                return pre + result.join()  + post;
+            }
+            
+           var tableDiv = document.getElementById("tableDiv");   
+          var btn = document.getElementById("btn");  
+        
+          
+    var genData = function(amount,prop){
+           
+   var url = "http://localhost:8084/sp5ex4RestJsonexamPrep/api/addresses/"+amount+"/"+prop;
+   var conf = {method: 'get'};
+   var promise = fetch(url,conf);
+   
+   promise.then(function(respone){
+       
+       return respone.json();
+       
+   }).then(function(text){
+   tableDiv.innerHTML = listToTable(text);
+   console.log(listToTable(text));
+       
+   });
+        
+    };
+    
+    
+          var setData = function(){
+
+          var amount = document.getElementById("amount").value;
+          var prop = document.getElementById("prop").value;    
+ 
+          genData(amount,prop);
+          };
+          
+    
+            genData(5,"fname,lname,street,city"); 
+          btn.addEventListener("click",setData);
+        </script>
+    </body>
+</html>

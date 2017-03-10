@@ -1,0 +1,5 @@
+rest/PersonResource.class
+facades/DBFacade.class
+entity/Person_.class
+entity/Person.class
+rest/ApplicationConfig.class

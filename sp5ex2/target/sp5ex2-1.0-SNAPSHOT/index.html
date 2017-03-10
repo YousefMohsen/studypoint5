@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Start Page</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+
+        <div class="container">
+        <div id="tableDiv" >
+ 
+        </div>
+   
+                
+                
+          
+            <input id="addPerson" type="submit" value="Add" />
+            <input id="refreshBtn" type="submit" value="Refresh"  />
+            </div>
+        
+    
+
+        
+        
+        <script>
+            
+           var refreshBtn = document.getElementById("refreshBtn");
+           var addPerson = document.getElementById("addPerson");
+           var deleteP = document.getElementById("deleteP");
+           
+        
+           
+        
+                 function listToTable(alist) {
+                var result = alist.map(function (item) {
+                    var deletehRef = "  <a onclick=\"deletePerson("+item.id+")\">Delete</a>"
+
+                    return "<tr> <td>" + item.id + "</td><td>" + item.fname + "</td><td>" + item.lname + "</td><td>" + item.phone + "</td><td>" +deletehRef+ "</td></tr>";
+                });
+                var pre = "<table class=\"table table-striped\"><thead><tr><th>ID</th><th>Firstname</th><th>Lastname</th><th>Phone</th></tr></thead><tbody>";
+                var post = "</tbody></table>";
+                
+                var newPersonForm =  "<tr> <td>" +   "" + "</td><td>" +   "<input type=\"text\" name=\"fname\" value=\"\" />"+ "</td><td>" +   "<input type=\"text\" name=\"lname\" value=\"\" />" + "</td><td>" +   "<input type=\"text\" name=\"phone\" value=\"\" />" +  "</td></tr>";
+                var formStart =    "<form id=\"aform\" action=\"api/person\" method=\"POST\">";
+                var formEnd =            " </form>";
+                return formStart+pre + result.join() + newPersonForm + post+formEnd;
+            }
+            
+           var tableDiv = document.getElementById("tableDiv");
+            
+            
+    var getAll = function(){
+           
+   var url = "http://localhost:8084/sp5ex2/api/person/all";
+   var conf = {method: 'get'};
+   var promise = fetch(url,conf);
+   
+   promise.then(function(respone){
+       
+       return respone.json();
+       
+   }).then(function(text){
+   tableDiv.innerHTML = listToTable(text);
+   console.log( listToTable(text));
+       
+   });
+        
+    };
+    
+    
+    var deletePerson = function(aId){
+        //document.getElementById("deleteId");
+   var url = "http://localhost:8084/sp5ex2/api/person/"+aId;
+   var conf = {method: 'delete'};
+   var promise = fetch(url,conf);
+   
+alert("Person with id "+aId+" deleted");
+        
+        getAll();
+        
+        
+    };
+    
+    
+            
+            addPerson.addEventListener("click", function(){
+           document.getElementById("aform").submit();
+         
+            setTimeout(getAll,1000);
+            });
+           
+           refreshBtn.addEventListener("click",getAll);
+
+getAll();
+            
+        </script>
+    </body>
+</html>

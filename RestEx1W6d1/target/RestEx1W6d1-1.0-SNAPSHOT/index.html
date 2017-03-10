@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Start Page</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>
+        <h1 id="q">Hello World!</h1>
+        <input id="btn" type="submit" value="New Quote" onclick="test()"/>
+        
+        <script>
+           var output = document.getElementById("q");
+
+
+   
+
+    var test = function(){
+           
+   var url = "http://localhost:8084/RestEx1W6d1/api/quote/random";
+   var conf = {method: 'get'};
+   var promise = fetch(url,conf);
+   
+   promise.then(function(respone){
+       
+       return respone.text();
+       
+   }).then(function(text){
+   output.innerHTML = text;
+       
+   });
+        
+    };
+   
+            
+        </script>
+    </body>
+</html>
